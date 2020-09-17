@@ -33,10 +33,9 @@ var Cube = function (center, size) {
   ];
 };
 
-var cube = new Cube(new Vertex(0, 0, 0), 200);
-console.log(cube);
-
-function project() {}
+function project(M) {
+  return new Vertex2D(M.x, M.z);
+}
 
 function render(objects, ctx, dx, dy) {
   // For each object
@@ -64,3 +63,18 @@ function render(objects, ctx, dx, dy) {
     }
   }
 }
+
+(function () {
+  var canvas = document.getElementById("viewer");
+  let ctx = canvas.getContext("2d");
+
+  canvas.height = canvas.offsetHeight;
+  canvas.width = canvas.offsetWidth;
+  var dx = canvas.width / 2;
+  var dy = canvas.height / 2;
+
+  var cube_center = new Vertex(0, 0, 0);
+  var cube = new Cube(cube_center, dy);
+
+  render([cube], ctx, dx, dy);
+})();
