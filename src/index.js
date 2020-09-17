@@ -38,6 +38,9 @@ function project(M) {
 }
 
 function render(objects, ctx, dx, dy) {
+  var canvas = document.getElementById("viewer");
+  let context = canvas.getContext("2d");
+  context.clearRect(0, 0, canvas.width, canvas.height);
   // For each object
   for (var i = 0; i < objects.length; ++i) {
     // For each face
@@ -66,16 +69,15 @@ function render(objects, ctx, dx, dy) {
 
 (function () {
   var canvas = document.getElementById("viewer");
-  let ctx = canvas.getContext("2d");
-  ctx.strokeStyle = "rgba(0, 0, 0, 0.3)";
-  ctx.fillStyle = "rgba(0, 150, 255, 0.3)";
 
   canvas.height = canvas.offsetHeight;
   canvas.width = canvas.offsetWidth;
   var dx = canvas.width / 2;
   var dy = canvas.height / 2;
-
-  var cube_center = new Vertex(0, 0, 0);
+  let ctx = canvas.getContext("2d");
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.3)";
+  ctx.fillStyle = "rgba(0, 150, 255, 0.3)";
+  var cube_center = new Vertex(10, 0, 0);
   var cube = new Cube(cube_center, 2 * dy);
   var objects = [cube];
 
@@ -86,8 +88,8 @@ function render(objects, ctx, dx, dy) {
   var my = 0;
 
   canvas.addEventListener("mousedown", initMove);
-  canvas.addEventListener("mousemove", move);
-  canvas.addEventListener("mouseup", stopMove);
+  document.addEventListener("mousemove", move);
+  document.addEventListener("mouseup", stopMove);
 
   // Rotate a vertice
   function rotate(M, center, theta, phi) {
@@ -117,8 +119,8 @@ function render(objects, ctx, dx, dy) {
 
   function move(evt) {
     if (mousedown) {
-      var theta = ((evt.clientX - mx) * Math.PI) / 360;
-      var phi = ((evt.clientY - my) * Math.PI) / 180;
+      var theta = ((evt.clientX - mx) * Math.PI) / 500;
+      var phi = ((evt.clientY - my) * Math.PI) / 500;
 
       for (var i = 0; i < 8; ++i)
         rotate(cube.vertices[i], cube_center, theta, phi);
