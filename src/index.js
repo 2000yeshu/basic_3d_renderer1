@@ -67,6 +67,8 @@ function render(objects, ctx, dx, dy) {
 (function () {
   var canvas = document.getElementById("viewer");
   let ctx = canvas.getContext("2d");
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.3)";
+  ctx.fillStyle = "rgba(0, 150, 255, 0.3)";
 
   canvas.height = canvas.offsetHeight;
   canvas.width = canvas.offsetWidth;
@@ -74,7 +76,61 @@ function render(objects, ctx, dx, dy) {
   var dy = canvas.height / 2;
 
   var cube_center = new Vertex(0, 0, 0);
-  var cube = new Cube(cube_center, dy);
+  var cube = new Cube(cube_center, 2 * dy);
+  var objects = [cube];
 
-  render([cube], ctx, dx, dy);
+  render(objects, ctx, dx, dy);
+
+  var mousedown = false;
+  var mx = 0;
+  var my = 0;
+
+  canvas.addEventListener("mousedown", initMove);
+  canvas.addEventListener("mousemove", move);
+  canvas.addEventListener("mouseup", stopMove);
+
+  // Rotate a vertice
+  function rotate(M, center, theta, phi) {
+    // Rotation matrix coefficients
+    var ct = Math.cos(theta);
+    var st = Math.sin(theta);
+    var cp = Math.cos(phi);
+    var sp = Math.sin(phi);
+
+    // Rotation
+    var x = M.x - center.x;
+    var y = M.y - center.y;
+    var z = M.z - center.z;
+
+    M.x = ct * x - st * cp * y + st * sp * z + center.x;
+    M.y = st * x + ct * cp * y - ct * sp * z + center.y;
+    M.z = sp * y + cp * z + center.z;
+  }
+  // Initialize the movement
+  function initMove(evt) {
+    //clearTimeout(autorotate_timeout);
+    mousedown = true;
+    //mouse click coordinates
+    mx = evt.clientX;
+    my = evt.clientY;
+  }
+
+  function move(evt) {
+    if (mousedown) {
+      var theta = ((evt.clientX - mx) * Math.PI) / 360;
+      var phi = ((evt.clientY - my) * Math.PI) / 180;
+
+      for (var i = 0; i < 8; ++i)
+        rotate(cube.vertices[i], cube_center, theta, phi);
+
+      mx = evt.clientX;
+      my = evt.clientY;
+
+      render(objects, ctx, dx, dy);
+    }
+  }
+
+  function stopMove() {
+    mousedown = false;
+  }
 })();
