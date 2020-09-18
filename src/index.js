@@ -88,6 +88,7 @@ function render(objects, ctx, dx, dy) {
   var my = 0;
 
   canvas.addEventListener("mousedown", initMove);
+  document.addEventListener("keyup", shiftOrZoom);
   document.addEventListener("mousemove", move);
   document.addEventListener("mouseup", stopMove);
 
@@ -130,6 +131,58 @@ function render(objects, ctx, dx, dy) {
 
       render(objects, ctx, dx, dy);
     }
+  }
+
+  function shiftOrZoom(e) {
+    //console.log("zoom", e.keyCode);
+    if (e.keyCode === 38) {
+      for (let i = 0; i < 8; i++) {
+        //cube.vertices[i] = new Vertex(
+        cube.vertices[i].x = cube.vertices[i].x * 1.2;
+        cube.vertices[i].y = cube.vertices[i].y * 1.2;
+        cube.vertices[i].z = cube.vertices[i].z * 1.2;
+        //);
+      }
+
+      render(objects, ctx, dx, dy);
+    }
+    //zoomin
+    else if (e.keyCode === 40) {
+      for (let i = 0; i < 8; i++) {
+        //cube.vertices[i] = new Vertex(
+        cube.vertices[i].x = cube.vertices[i].x / 1.2;
+        cube.vertices[i].y = cube.vertices[i].y / 1.2;
+        cube.vertices[i].z = cube.vertices[i].z / 1.2;
+        //);
+      }
+
+      render(objects, ctx, dx, dy);
+    }
+    //zoom out
+    else if (e.keyCode === 39) {
+      for (let i = 0; i < 8; i++) {
+        //cube.vertices[i] = new Vertex(
+        cube.vertices[i].x = cube.vertices[i].x + 10;
+        //cube.vertices[i].y = cube.vertices[i].y / 1;
+        //cube.vertices[i].z = cube.vertices[i].z / 1;
+        //);
+      }
+
+      render(objects, ctx, dx, dy);
+    }
+    //shift right
+    else if (e.keyCode === 37) {
+      for (let i = 0; i < 8; i++) {
+        //cube.vertices[i] = new Vertex(
+        cube.vertices[i].x = cube.vertices[i].x - 10;
+        //cube.vertices[i].y = cube.vertices[i].y / 1;
+        //cube.vertices[i].z = cube.vertices[i].z / 1;
+        //);
+      }
+
+      render(objects, ctx, dx, dy);
+    }
+    //shift left
   }
 
   function stopMove() {
