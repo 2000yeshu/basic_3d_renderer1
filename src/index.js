@@ -82,6 +82,11 @@ function render(objects, ctx, dx, dy) {
   var objects = [cube];
 
   render(objects, ctx, dx, dy);
+  setInterval(() => {
+    for (var i = 0; i < 8; ++i)
+      rotate(cube.vertices[i], cube_center, Math.PI / 800, Math.PI / 800);
+    render(objects, ctx, dx, dy);
+  }, 50);
 
   var mousedown = false;
   var mx = 0;
