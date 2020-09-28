@@ -79,6 +79,7 @@ function render(objects, ctx, dx, dy) {
   ctx.fillStyle = "rgba(0, 150, 255, 0.3)";
   var cube_center = new Vertex(10, 0, 0);
   var cube = new Cube(cube_center, 2 * dy);
+  var cube = new Cube(cube_center, dy);
   var objects = [cube];
 
   render(objects, ctx, dx, dy);
